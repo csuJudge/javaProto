@@ -70,7 +70,7 @@ message QueryRuntimeInfoRsp{
 
 message judgeDetail{
     int32 checkType = 1; // 检查类型
-    int32 checkID = 2; // OOP特性名, 如 inheritance / thread
+    string checkID = 2; // OOP特性名, 如 inheritance / thread
     int32 caseID = 3; // 用例编号
     int32 checkName = 4; // 展示名, 如 "使用了继承
     int32 passed = 5; // 是否通过
@@ -118,7 +118,7 @@ message compileInfo {
 message runtimeInfo{
   int32 problemCaseID = 1;// 样例编号
   int32 status = 2; // 编译状态
-  string  output = 3; // 运行输出
+  string output = 3; // 运行输出
   string errorOutput =4; // 错误输出
   int32 exitCode = 5;// 进程退出码
   int32 time = 6; // 运行耗时
