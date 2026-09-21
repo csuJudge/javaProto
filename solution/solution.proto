@@ -1,5 +1,5 @@
 syntax            = "proto3";
-option go_package = "github.com/csuJudge/judgeProto/java/javaSolution";
+option go_package = "github.com/csuJudge/javaProto/solution";
 
 package oj.java.solution;
 
@@ -33,6 +33,7 @@ message QuerySolutionReq{
   int32 userID = 1; // 用户编号
   int32 page = 2; // 页
   int32 limit = 3; // 页大小
+  int32 problemID = 4; // 题目编号
 }
 
 message QuerySolutionRsp{
@@ -64,6 +65,18 @@ message QueryRuntimeInfoRsp{
   int32 result = 3; // 结果
   repeated runtimeInfo runtimeInfo = 4;  // 运行信息
   compileInfo compileInfo = 5;  //  编译信息
+  repeated judgeDetail detail = 6; // 判题细节
+}
+
+message judgeDetail{
+    int32 checkType = 1; // 检查类型
+    int32 checkID = 2; // OOP特性名, 如 inheritance / thread
+    int32 caseID = 3; // 用例编号
+    int32 checkName = 4; // 展示名, 如 "使用了继承
+    int32 passed = 5; // 是否通过
+    int32 points = 6; // 该项分值
+    int32 earned = 7; // 实际得分
+    string reason = 8; // 判据/证据(特性项: AST 证据; 用例: 留空, 证据在 runtime_info)
 }
 
 message AddSolutionReq{

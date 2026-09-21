@@ -1,5 +1,5 @@
 syntax            = "proto3";
-option go_package = "github.com/csuJudge/judgeProto/java/javaProblem";
+option go_package = "github.com/csuJudge/javaProto/problem";
 
 package oj.java.problem;
 
@@ -38,6 +38,8 @@ message Problem {
   string updatedTime = 14; // 更新时间
   int32 solved = 15; // 解决数
   int32 submission = 16; // 提交数
+  string exampleInput = 17; // 输入样例
+  string exampleOutput = 18; // 输出样例
 }
 
 message QueryProblemNameReq{
