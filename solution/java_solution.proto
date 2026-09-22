@@ -72,7 +72,7 @@ message judgeDetail{
     int32 checkType = 1; // 检查类型
     string checkID = 2; // OOP特性名, 如 inheritance / thread
     int32 caseID = 3; // 用例编号
-    int32 checkName = 4; // 展示名, 如 "使用了继承
+    string checkName = 4; // 展示名, 如 "使用了继承
     int32 passed = 5; // 是否通过
     int32 points = 6; // 该项分值
     int32 earned = 7; // 实际得分
