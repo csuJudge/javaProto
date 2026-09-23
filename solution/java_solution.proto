@@ -16,6 +16,24 @@ service SolutionServer {
   rpc QuerySolution(QuerySolutionReq) returns (QuerySolutionRsp) {}
   // QueryResult 查询结果
   rpc QueryResult(QueryRuntimeInfoReq) returns (QueryResultRsp) {}
+  // QueryUserProblemSolutionStatus 查询用户的题目提交状态
+  rpc QueryUserProblemSolutionStatus(QueryUserProblemSolutionStatusReq)returns(QueryUserProblemSolutionStatusRsp){}
+}
+
+message QueryUserProblemSolutionStatusRsp{
+  string message = 1;  // 返回信息
+  int32 code = 2;  // 返回码
+  repeated ProblemSolutionStatus results = 3; // 结果
+}
+
+message ProblemSolutionStatus{
+  int32 problemID = 1; // 题目编号
+  int32 result = 2; // 结果
+}
+
+message QueryUserProblemSolutionStatusReq{
+  int32 userID = 1; // 用户编号
+  string problemIDs = 2; // 题目编号
 }
 
 message QueryLatestCodeReq{
