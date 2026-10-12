@@ -24,7 +24,7 @@ const (
 
 type QueryContestProblemReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ContestID     int32                  `protobuf:"varint,1,opt,name=contestID,proto3" json:"contestID,omitempty"`     // 作业编号
+	ProblemID     string                 `protobuf:"bytes,1,opt,name=problemID,proto3" json:"problemID,omitempty"`      // 题目编号
 	UserID        int32                  `protobuf:"varint,2,opt,name=userID,proto3" json:"userID,omitempty"`           // 用户编号
 	ContestType   int32                  `protobuf:"varint,3,opt,name=contestType,proto3" json:"contestType,omitempty"` // 作业类型
 	unknownFields protoimpl.UnknownFields
@@ -61,11 +61,11 @@ func (*QueryContestProblemReq) Descriptor() ([]byte, []int) {
 	return file_java_problem_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *QueryContestProblemReq) GetContestID() int32 {
+func (x *QueryContestProblemReq) GetProblemID() string {
 	if x != nil {
-		return x.ContestID
+		return x.ProblemID
 	}
-	return 0
+	return ""
 }
 
 func (x *QueryContestProblemReq) GetUserID() int32 {
@@ -1296,7 +1296,7 @@ const file_java_problem_proto_rawDesc = "" +
 	"\n" +
 	"\x12java_problem.proto\x12\x0foj.java.problem\"p\n" +
 	"\x16QueryContestProblemReq\x12\x1c\n" +
-	"\tcontestID\x18\x01 \x01(\x05R\tcontestID\x12\x16\n" +
+	"\tproblemID\x18\x01 \x01(\tR\tproblemID\x12\x16\n" +
 	"\x06userID\x18\x02 \x01(\x05R\x06userID\x12 \n" +
 	"\vcontestType\x18\x03 \x01(\x05R\vcontestType\"\xc8\x01\n" +
 	"\x0eContestProblem\x12\x1c\n" +
