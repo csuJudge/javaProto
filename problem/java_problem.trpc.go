@@ -33,6 +33,8 @@ type ProblemServerService interface {
 	QueryAllProblem(ctx context.Context, req *QueryProblemListReq) (*QueryAllProblemRsp, error)
 	// QueryProblemName QueryProblemName 查询题目名称
 	QueryProblemName(ctx context.Context, req *QueryProblemNameReq) (*QueryAllProblemRsp, error)
+	// QueryContestProblem QueryContestProblem 查询作业的题目数据
+	QueryContestProblem(ctx context.Context, req *QueryContestProblemReq) (*QueryContestProblemReqRsp, error)
 }
 
 func ProblemServerService_QueryProblem_Handler(svr interface{}, ctx context.Context, f server.FilterFunc) (interface{}, error) {
@@ -161,6 +163,24 @@ func ProblemServerService_QueryProblemName_Handler(svr interface{}, ctx context.
 	return rsp, nil
 }
 
+func ProblemServerService_QueryContestProblem_Handler(svr interface{}, ctx context.Context, f server.FilterFunc) (interface{}, error) {
+	req := &QueryContestProblemReq{}
+	filters, err := f(req)
+	if err != nil {
+		return nil, err
+	}
+	handleFunc := func(ctx context.Context, reqbody interface{}) (interface{}, error) {
+		return svr.(ProblemServerService).QueryContestProblem(ctx, reqbody.(*QueryContestProblemReq))
+	}
+
+	var rsp interface{}
+	rsp, err = filters.Filter(ctx, req, handleFunc)
+	if err != nil {
+		return nil, err
+	}
+	return rsp, nil
+}
+
 // ProblemServerServer_ServiceDesc descriptor for server.RegisterService.
 var ProblemServerServer_ServiceDesc = server.ServiceDesc{
 	ServiceName: "oj.java.problem.ProblemServer",
@@ -193,6 +213,10 @@ var ProblemServerServer_ServiceDesc = server.ServiceDesc{
 		{
 			Name: "/oj.java.problem.ProblemServer/QueryProblemName",
 			Func: ProblemServerService_QueryProblemName_Handler,
+		},
+		{
+			Name: "/oj.java.problem.ProblemServer/QueryContestProblem",
+			Func: ProblemServerService_QueryContestProblem_Handler,
 		},
 	},
 }
@@ -243,6 +267,11 @@ func (s *UnimplementedProblemServer) QueryProblemName(ctx context.Context, req *
 	return nil, errors.New("rpc QueryProblemName of service ProblemServer is not implemented")
 }
 
+// QueryContestProblem QueryContestProblem 查询作业的题目数据
+func (s *UnimplementedProblemServer) QueryContestProblem(ctx context.Context, req *QueryContestProblemReq) (*QueryContestProblemReqRsp, error) {
+	return nil, errors.New("rpc QueryContestProblem of service ProblemServer is not implemented")
+}
+
 // END --------------------------------- Default Unimplemented Server Service --------------------------------- END
 
 // END ======================================= Server Service Definition ======================================= END
@@ -265,6 +294,8 @@ type ProblemServerClientProxy interface {
 	QueryAllProblem(ctx context.Context, req *QueryProblemListReq, opts ...client.Option) (rsp *QueryAllProblemRsp, err error)
 	// QueryProblemName QueryProblemName 查询题目名称
 	QueryProblemName(ctx context.Context, req *QueryProblemNameReq, opts ...client.Option) (rsp *QueryAllProblemRsp, err error)
+	// QueryContestProblem QueryContestProblem 查询作业的题目数据
+	QueryContestProblem(ctx context.Context, req *QueryContestProblemReq, opts ...client.Option) (rsp *QueryContestProblemReqRsp, err error)
 }
 
 type ProblemServerClientProxyImpl struct {
@@ -410,6 +441,26 @@ func (c *ProblemServerClientProxyImpl) QueryProblemName(ctx context.Context, req
 	callopts = append(callopts, c.opts...)
 	callopts = append(callopts, opts...)
 	rsp := &QueryAllProblemRsp{}
+	if err := c.client.Invoke(ctx, req, rsp, callopts...); err != nil {
+		return nil, err
+	}
+	return rsp, nil
+}
+
+func (c *ProblemServerClientProxyImpl) QueryContestProblem(ctx context.Context, req *QueryContestProblemReq, opts ...client.Option) (*QueryContestProblemReqRsp, error) {
+	ctx, msg := codec.WithCloneMessage(ctx)
+	defer codec.PutBackMessage(msg)
+	msg.WithClientRPCName("/oj.java.problem.ProblemServer/QueryContestProblem")
+	msg.WithCalleeServiceName(ProblemServerServer_ServiceDesc.ServiceName)
+	msg.WithCalleeApp("")
+	msg.WithCalleeServer("")
+	msg.WithCalleeService("ProblemServer")
+	msg.WithCalleeMethod("QueryContestProblem")
+	msg.WithSerializationType(codec.SerializationTypePB)
+	callopts := make([]client.Option, 0, len(c.opts)+len(opts))
+	callopts = append(callopts, c.opts...)
+	callopts = append(callopts, opts...)
+	rsp := &QueryContestProblemReqRsp{}
 	if err := c.client.Invoke(ctx, req, rsp, callopts...); err != nil {
 		return nil, err
 	}
