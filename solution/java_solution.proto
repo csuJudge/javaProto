@@ -18,6 +18,71 @@ service SolutionServer {
   rpc QueryResult(QueryRuntimeInfoReq) returns (QueryResultRsp) {}
   // QueryUserProblemSolutionStatus 查询用户的题目提交状态
   rpc QueryUserProblemSolutionStatus(QueryUserProblemSolutionStatusReq)returns(QueryUserProblemSolutionStatusRsp){}
+  // QueryContestRankData 查询作业的排名数据
+  rpc QueryContestRankData(QueryContestRankDataReq) returns (QueryContestRankDataRsp) {}
+  // QueryUserContestSubmission 查询用户作业的提交统计数据
+  rpc QueryUserContestSubmission(QueryUserContestSubmissionReq) returns (QueryUserContestSubmissionRsp) {}
+}
+
+message QueryUserContestSubmissionReq {
+  int32 userID = 1;  // 用户编号
+  string problemIDs = 2;  // 题目列表
+  int32 contestID = 3;  // 作业列表
+}
+
+message UserProblemCondition {
+  int32 problemID = 1;  // 题目编号
+  int32 isDone = 2;  // 是否做完
+  float passRate = 3; // 通过率
+}
+
+message QueryUserContestSubmissionRsp {
+  string message = 1;  // 返回信息
+  int32 code = 2;  // 返回码
+  repeated UserProblemCondition condition = 3;  // 题目的完成状态
+}
+
+message QueryContestRankDataReq {
+  int32 contestID = 1;  // 作业编号
+  int32 userID = 2;  // 用户编号
+  int32 queryType = 3;  // 排名类型
+}
+
+message QueryContestRankDataRsp {
+  string message = 1;  // 返回信息
+  int32 code = 2;  // 返回码
+  repeated Problem problems = 3;  // 题目数据
+  repeated Rank ranks = 4;  // 排名
+}
+
+message Problem {
+  int32 problemID = 1;  // 题目编号
+  string name = 2;  // 题目名称
+  int32 isSolved = 3;  // 是否做完
+  int32 difficulty = 4; // 难度
+  int32 timeCost = 5; // 耗时
+  int32 memoryCost = 6; // 消耗的内存
+  int32 score = 7; // 得分
+}
+
+message Rank {
+  string name = 1;  // 用户姓名
+  int32 userID = 2;  // 用户编号
+  int32 solvedCount = 3;  // 解决的数量
+  string number = 4;  // 用户学工号
+  float score = 5;  // 总得分
+  repeated ContestSolutionData solutionData = 6;  // 作业提交数据
+  int64 timeCost = 7; // 耗时
+}
+
+message ContestSolutionData {
+  int32 problemID = 1;  // 题目主键
+  float passRate = 2;  // 通过率
+  string code = 3;  // 用户代码
+  string createdTime = 4;  // 提交时间
+  string name = 5;  // 题目名称
+  int32 submitCount = 6;  // 提交数
+  int32 solvedCount = 7;  // 正确数
 }
 
 message QueryUserProblemSolutionStatusRsp{
@@ -53,6 +118,7 @@ message QuerySolutionReq{
   int32 page = 2; // 页
   int32 limit = 3; // 页大小
   int32 problemID = 4; // 题目编号
+  int32 contestID = 5; // 作业编号
 }
 
 message QuerySolutionRsp{

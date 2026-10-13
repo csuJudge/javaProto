@@ -33,6 +33,10 @@ type SolutionServerService interface {
 	QueryResult(ctx context.Context, req *QueryRuntimeInfoReq) (*QueryResultRsp, error)
 	// QueryUserProblemSolutionStatus QueryUserProblemSolutionStatus 查询用户的题目提交状态
 	QueryUserProblemSolutionStatus(ctx context.Context, req *QueryUserProblemSolutionStatusReq) (*QueryUserProblemSolutionStatusRsp, error)
+	// QueryContestRankData QueryContestRankData 查询作业的排名数据
+	QueryContestRankData(ctx context.Context, req *QueryContestRankDataReq) (*QueryContestRankDataRsp, error)
+	// QueryUserContestSubmission QueryUserContestSubmission 查询用户作业的提交统计数据
+	QueryUserContestSubmission(ctx context.Context, req *QueryUserContestSubmissionReq) (*QueryUserContestSubmissionRsp, error)
 }
 
 func SolutionServerService_QueryRuntimeInfo_Handler(svr interface{}, ctx context.Context, f server.FilterFunc) (interface{}, error) {
@@ -161,6 +165,42 @@ func SolutionServerService_QueryUserProblemSolutionStatus_Handler(svr interface{
 	return rsp, nil
 }
 
+func SolutionServerService_QueryContestRankData_Handler(svr interface{}, ctx context.Context, f server.FilterFunc) (interface{}, error) {
+	req := &QueryContestRankDataReq{}
+	filters, err := f(req)
+	if err != nil {
+		return nil, err
+	}
+	handleFunc := func(ctx context.Context, reqbody interface{}) (interface{}, error) {
+		return svr.(SolutionServerService).QueryContestRankData(ctx, reqbody.(*QueryContestRankDataReq))
+	}
+
+	var rsp interface{}
+	rsp, err = filters.Filter(ctx, req, handleFunc)
+	if err != nil {
+		return nil, err
+	}
+	return rsp, nil
+}
+
+func SolutionServerService_QueryUserContestSubmission_Handler(svr interface{}, ctx context.Context, f server.FilterFunc) (interface{}, error) {
+	req := &QueryUserContestSubmissionReq{}
+	filters, err := f(req)
+	if err != nil {
+		return nil, err
+	}
+	handleFunc := func(ctx context.Context, reqbody interface{}) (interface{}, error) {
+		return svr.(SolutionServerService).QueryUserContestSubmission(ctx, reqbody.(*QueryUserContestSubmissionReq))
+	}
+
+	var rsp interface{}
+	rsp, err = filters.Filter(ctx, req, handleFunc)
+	if err != nil {
+		return nil, err
+	}
+	return rsp, nil
+}
+
 // SolutionServerServer_ServiceDesc descriptor for server.RegisterService.
 var SolutionServerServer_ServiceDesc = server.ServiceDesc{
 	ServiceName: "oj.java.solution.SolutionServer",
@@ -193,6 +233,14 @@ var SolutionServerServer_ServiceDesc = server.ServiceDesc{
 		{
 			Name: "/oj.java.solution.SolutionServer/QueryUserProblemSolutionStatus",
 			Func: SolutionServerService_QueryUserProblemSolutionStatus_Handler,
+		},
+		{
+			Name: "/oj.java.solution.SolutionServer/QueryContestRankData",
+			Func: SolutionServerService_QueryContestRankData_Handler,
+		},
+		{
+			Name: "/oj.java.solution.SolutionServer/QueryUserContestSubmission",
+			Func: SolutionServerService_QueryUserContestSubmission_Handler,
 		},
 	},
 }
@@ -243,6 +291,16 @@ func (s *UnimplementedSolutionServer) QueryUserProblemSolutionStatus(ctx context
 	return nil, errors.New("rpc QueryUserProblemSolutionStatus of service SolutionServer is not implemented")
 }
 
+// QueryContestRankData QueryContestRankData 查询作业的排名数据
+func (s *UnimplementedSolutionServer) QueryContestRankData(ctx context.Context, req *QueryContestRankDataReq) (*QueryContestRankDataRsp, error) {
+	return nil, errors.New("rpc QueryContestRankData of service SolutionServer is not implemented")
+}
+
+// QueryUserContestSubmission QueryUserContestSubmission 查询用户作业的提交统计数据
+func (s *UnimplementedSolutionServer) QueryUserContestSubmission(ctx context.Context, req *QueryUserContestSubmissionReq) (*QueryUserContestSubmissionRsp, error) {
+	return nil, errors.New("rpc QueryUserContestSubmission of service SolutionServer is not implemented")
+}
+
 // END --------------------------------- Default Unimplemented Server Service --------------------------------- END
 
 // END ======================================= Server Service Definition ======================================= END
@@ -265,6 +323,10 @@ type SolutionServerClientProxy interface {
 	QueryResult(ctx context.Context, req *QueryRuntimeInfoReq, opts ...client.Option) (rsp *QueryResultRsp, err error)
 	// QueryUserProblemSolutionStatus QueryUserProblemSolutionStatus 查询用户的题目提交状态
 	QueryUserProblemSolutionStatus(ctx context.Context, req *QueryUserProblemSolutionStatusReq, opts ...client.Option) (rsp *QueryUserProblemSolutionStatusRsp, err error)
+	// QueryContestRankData QueryContestRankData 查询作业的排名数据
+	QueryContestRankData(ctx context.Context, req *QueryContestRankDataReq, opts ...client.Option) (rsp *QueryContestRankDataRsp, err error)
+	// QueryUserContestSubmission QueryUserContestSubmission 查询用户作业的提交统计数据
+	QueryUserContestSubmission(ctx context.Context, req *QueryUserContestSubmissionReq, opts ...client.Option) (rsp *QueryUserContestSubmissionRsp, err error)
 }
 
 type SolutionServerClientProxyImpl struct {
@@ -410,6 +472,46 @@ func (c *SolutionServerClientProxyImpl) QueryUserProblemSolutionStatus(ctx conte
 	callopts = append(callopts, c.opts...)
 	callopts = append(callopts, opts...)
 	rsp := &QueryUserProblemSolutionStatusRsp{}
+	if err := c.client.Invoke(ctx, req, rsp, callopts...); err != nil {
+		return nil, err
+	}
+	return rsp, nil
+}
+
+func (c *SolutionServerClientProxyImpl) QueryContestRankData(ctx context.Context, req *QueryContestRankDataReq, opts ...client.Option) (*QueryContestRankDataRsp, error) {
+	ctx, msg := codec.WithCloneMessage(ctx)
+	defer codec.PutBackMessage(msg)
+	msg.WithClientRPCName("/oj.java.solution.SolutionServer/QueryContestRankData")
+	msg.WithCalleeServiceName(SolutionServerServer_ServiceDesc.ServiceName)
+	msg.WithCalleeApp("")
+	msg.WithCalleeServer("")
+	msg.WithCalleeService("SolutionServer")
+	msg.WithCalleeMethod("QueryContestRankData")
+	msg.WithSerializationType(codec.SerializationTypePB)
+	callopts := make([]client.Option, 0, len(c.opts)+len(opts))
+	callopts = append(callopts, c.opts...)
+	callopts = append(callopts, opts...)
+	rsp := &QueryContestRankDataRsp{}
+	if err := c.client.Invoke(ctx, req, rsp, callopts...); err != nil {
+		return nil, err
+	}
+	return rsp, nil
+}
+
+func (c *SolutionServerClientProxyImpl) QueryUserContestSubmission(ctx context.Context, req *QueryUserContestSubmissionReq, opts ...client.Option) (*QueryUserContestSubmissionRsp, error) {
+	ctx, msg := codec.WithCloneMessage(ctx)
+	defer codec.PutBackMessage(msg)
+	msg.WithClientRPCName("/oj.java.solution.SolutionServer/QueryUserContestSubmission")
+	msg.WithCalleeServiceName(SolutionServerServer_ServiceDesc.ServiceName)
+	msg.WithCalleeApp("")
+	msg.WithCalleeServer("")
+	msg.WithCalleeService("SolutionServer")
+	msg.WithCalleeMethod("QueryUserContestSubmission")
+	msg.WithSerializationType(codec.SerializationTypePB)
+	callopts := make([]client.Option, 0, len(c.opts)+len(opts))
+	callopts = append(callopts, c.opts...)
+	callopts = append(callopts, opts...)
+	rsp := &QueryUserContestSubmissionRsp{}
 	if err := c.client.Invoke(ctx, req, rsp, callopts...); err != nil {
 		return nil, err
 	}

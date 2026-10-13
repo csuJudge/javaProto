@@ -60,6 +60,21 @@ func (mr *MockSolutionServerServiceMockRecorder) AddSolution(ctx, req any) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddSolution", reflect.TypeOf((*MockSolutionServerService)(nil).AddSolution), ctx, req)
 }
 
+// QueryContestRankData mocks base method.
+func (m *MockSolutionServerService) QueryContestRankData(ctx context.Context, req *QueryContestRankDataReq) (*QueryContestRankDataRsp, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QueryContestRankData", ctx, req)
+	ret0, _ := ret[0].(*QueryContestRankDataRsp)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// QueryContestRankData indicates an expected call of QueryContestRankData.
+func (mr *MockSolutionServerServiceMockRecorder) QueryContestRankData(ctx, req any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryContestRankData", reflect.TypeOf((*MockSolutionServerService)(nil).QueryContestRankData), ctx, req)
+}
+
 // QueryLatestCode mocks base method.
 func (m *MockSolutionServerService) QueryLatestCode(ctx context.Context, req *QueryLatestCodeReq) (*QuerySourceCodeRsp, error) {
 	m.ctrl.T.Helper()
@@ -135,6 +150,21 @@ func (mr *MockSolutionServerServiceMockRecorder) QuerySourceCode(ctx, req any) *
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuerySourceCode", reflect.TypeOf((*MockSolutionServerService)(nil).QuerySourceCode), ctx, req)
 }
 
+// QueryUserContestSubmission mocks base method.
+func (m *MockSolutionServerService) QueryUserContestSubmission(ctx context.Context, req *QueryUserContestSubmissionReq) (*QueryUserContestSubmissionRsp, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QueryUserContestSubmission", ctx, req)
+	ret0, _ := ret[0].(*QueryUserContestSubmissionRsp)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// QueryUserContestSubmission indicates an expected call of QueryUserContestSubmission.
+func (mr *MockSolutionServerServiceMockRecorder) QueryUserContestSubmission(ctx, req any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryUserContestSubmission", reflect.TypeOf((*MockSolutionServerService)(nil).QueryUserContestSubmission), ctx, req)
+}
+
 // QueryUserProblemSolutionStatus mocks base method.
 func (m *MockSolutionServerService) QueryUserProblemSolutionStatus(ctx context.Context, req *QueryUserProblemSolutionStatusReq) (*QueryUserProblemSolutionStatusRsp, error) {
 	m.ctrl.T.Helper()
@@ -196,6 +226,26 @@ func (mr *MockSolutionServerClientProxyMockRecorder) AddSolution(ctx, req any, o
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]any{ctx, req}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddSolution", reflect.TypeOf((*MockSolutionServerClientProxy)(nil).AddSolution), varargs...)
+}
+
+// QueryContestRankData mocks base method.
+func (m *MockSolutionServerClientProxy) QueryContestRankData(ctx context.Context, req *QueryContestRankDataReq, opts ...client.Option) (*QueryContestRankDataRsp, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, req}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "QueryContestRankData", varargs...)
+	ret0, _ := ret[0].(*QueryContestRankDataRsp)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// QueryContestRankData indicates an expected call of QueryContestRankData.
+func (mr *MockSolutionServerClientProxyMockRecorder) QueryContestRankData(ctx, req any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, req}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryContestRankData", reflect.TypeOf((*MockSolutionServerClientProxy)(nil).QueryContestRankData), varargs...)
 }
 
 // QueryLatestCode mocks base method.
@@ -296,6 +346,26 @@ func (mr *MockSolutionServerClientProxyMockRecorder) QuerySourceCode(ctx, req an
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]any{ctx, req}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuerySourceCode", reflect.TypeOf((*MockSolutionServerClientProxy)(nil).QuerySourceCode), varargs...)
+}
+
+// QueryUserContestSubmission mocks base method.
+func (m *MockSolutionServerClientProxy) QueryUserContestSubmission(ctx context.Context, req *QueryUserContestSubmissionReq, opts ...client.Option) (*QueryUserContestSubmissionRsp, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, req}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "QueryUserContestSubmission", varargs...)
+	ret0, _ := ret[0].(*QueryUserContestSubmissionRsp)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// QueryUserContestSubmission indicates an expected call of QueryUserContestSubmission.
+func (mr *MockSolutionServerClientProxyMockRecorder) QueryUserContestSubmission(ctx, req any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, req}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryUserContestSubmission", reflect.TypeOf((*MockSolutionServerClientProxy)(nil).QueryUserContestSubmission), varargs...)
 }
 
 // QueryUserProblemSolutionStatus mocks base method.
