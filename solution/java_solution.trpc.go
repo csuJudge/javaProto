@@ -37,6 +37,16 @@ type SolutionServerService interface {
 	QueryContestRankData(ctx context.Context, req *QueryContestRankDataReq) (*QueryContestRankDataRsp, error)
 	// QueryUserContestSubmission QueryUserContestSubmission 查询用户作业的提交统计数据
 	QueryUserContestSubmission(ctx context.Context, req *QueryUserContestSubmissionReq) (*QueryUserContestSubmissionRsp, error)
+	// CountContestParticipants CountContestParticipants 查询作业参与人数
+	CountContestParticipants(ctx context.Context, req *CountContestParticipantsReq) (*CountContestParticipantsRsp, error)
+	// QueryContestFinishCount QueryContestFinishCount 查询作业完成人数
+	QueryContestFinishCount(ctx context.Context, req *QueryContestFinishCountReq) (*QueryContestFinishCountRsp, error)
+	// CountContestSubmission CountContestSubmission 查询作业提交分布统计
+	CountContestSubmission(ctx context.Context, req *CountContestSubmissionReq) (*CountContestSubmissionRsp, error)
+	// CountContestProblemSubmission CountContestProblemSubmission 查询作业的题目提交统计数据
+	CountContestProblemSubmission(ctx context.Context, req *CountContestProblemSubmissionReq) (*CountContestProblemSubmissionRsp, error)
+	// QueryContestCompletionStatus QueryContestCompletionStatus 查询作业完成情况
+	QueryContestCompletionStatus(ctx context.Context, req *QueryContestCompletionStatusReq) (*QueryContestCompletionStatusRsp, error)
 }
 
 func SolutionServerService_QueryRuntimeInfo_Handler(svr interface{}, ctx context.Context, f server.FilterFunc) (interface{}, error) {
@@ -201,6 +211,96 @@ func SolutionServerService_QueryUserContestSubmission_Handler(svr interface{}, c
 	return rsp, nil
 }
 
+func SolutionServerService_CountContestParticipants_Handler(svr interface{}, ctx context.Context, f server.FilterFunc) (interface{}, error) {
+	req := &CountContestParticipantsReq{}
+	filters, err := f(req)
+	if err != nil {
+		return nil, err
+	}
+	handleFunc := func(ctx context.Context, reqbody interface{}) (interface{}, error) {
+		return svr.(SolutionServerService).CountContestParticipants(ctx, reqbody.(*CountContestParticipantsReq))
+	}
+
+	var rsp interface{}
+	rsp, err = filters.Filter(ctx, req, handleFunc)
+	if err != nil {
+		return nil, err
+	}
+	return rsp, nil
+}
+
+func SolutionServerService_QueryContestFinishCount_Handler(svr interface{}, ctx context.Context, f server.FilterFunc) (interface{}, error) {
+	req := &QueryContestFinishCountReq{}
+	filters, err := f(req)
+	if err != nil {
+		return nil, err
+	}
+	handleFunc := func(ctx context.Context, reqbody interface{}) (interface{}, error) {
+		return svr.(SolutionServerService).QueryContestFinishCount(ctx, reqbody.(*QueryContestFinishCountReq))
+	}
+
+	var rsp interface{}
+	rsp, err = filters.Filter(ctx, req, handleFunc)
+	if err != nil {
+		return nil, err
+	}
+	return rsp, nil
+}
+
+func SolutionServerService_CountContestSubmission_Handler(svr interface{}, ctx context.Context, f server.FilterFunc) (interface{}, error) {
+	req := &CountContestSubmissionReq{}
+	filters, err := f(req)
+	if err != nil {
+		return nil, err
+	}
+	handleFunc := func(ctx context.Context, reqbody interface{}) (interface{}, error) {
+		return svr.(SolutionServerService).CountContestSubmission(ctx, reqbody.(*CountContestSubmissionReq))
+	}
+
+	var rsp interface{}
+	rsp, err = filters.Filter(ctx, req, handleFunc)
+	if err != nil {
+		return nil, err
+	}
+	return rsp, nil
+}
+
+func SolutionServerService_CountContestProblemSubmission_Handler(svr interface{}, ctx context.Context, f server.FilterFunc) (interface{}, error) {
+	req := &CountContestProblemSubmissionReq{}
+	filters, err := f(req)
+	if err != nil {
+		return nil, err
+	}
+	handleFunc := func(ctx context.Context, reqbody interface{}) (interface{}, error) {
+		return svr.(SolutionServerService).CountContestProblemSubmission(ctx, reqbody.(*CountContestProblemSubmissionReq))
+	}
+
+	var rsp interface{}
+	rsp, err = filters.Filter(ctx, req, handleFunc)
+	if err != nil {
+		return nil, err
+	}
+	return rsp, nil
+}
+
+func SolutionServerService_QueryContestCompletionStatus_Handler(svr interface{}, ctx context.Context, f server.FilterFunc) (interface{}, error) {
+	req := &QueryContestCompletionStatusReq{}
+	filters, err := f(req)
+	if err != nil {
+		return nil, err
+	}
+	handleFunc := func(ctx context.Context, reqbody interface{}) (interface{}, error) {
+		return svr.(SolutionServerService).QueryContestCompletionStatus(ctx, reqbody.(*QueryContestCompletionStatusReq))
+	}
+
+	var rsp interface{}
+	rsp, err = filters.Filter(ctx, req, handleFunc)
+	if err != nil {
+		return nil, err
+	}
+	return rsp, nil
+}
+
 // SolutionServerServer_ServiceDesc descriptor for server.RegisterService.
 var SolutionServerServer_ServiceDesc = server.ServiceDesc{
 	ServiceName: "oj.java.solution.SolutionServer",
@@ -241,6 +341,26 @@ var SolutionServerServer_ServiceDesc = server.ServiceDesc{
 		{
 			Name: "/oj.java.solution.SolutionServer/QueryUserContestSubmission",
 			Func: SolutionServerService_QueryUserContestSubmission_Handler,
+		},
+		{
+			Name: "/oj.java.solution.SolutionServer/CountContestParticipants",
+			Func: SolutionServerService_CountContestParticipants_Handler,
+		},
+		{
+			Name: "/oj.java.solution.SolutionServer/QueryContestFinishCount",
+			Func: SolutionServerService_QueryContestFinishCount_Handler,
+		},
+		{
+			Name: "/oj.java.solution.SolutionServer/CountContestSubmission",
+			Func: SolutionServerService_CountContestSubmission_Handler,
+		},
+		{
+			Name: "/oj.java.solution.SolutionServer/CountContestProblemSubmission",
+			Func: SolutionServerService_CountContestProblemSubmission_Handler,
+		},
+		{
+			Name: "/oj.java.solution.SolutionServer/QueryContestCompletionStatus",
+			Func: SolutionServerService_QueryContestCompletionStatus_Handler,
 		},
 	},
 }
@@ -301,6 +421,31 @@ func (s *UnimplementedSolutionServer) QueryUserContestSubmission(ctx context.Con
 	return nil, errors.New("rpc QueryUserContestSubmission of service SolutionServer is not implemented")
 }
 
+// CountContestParticipants CountContestParticipants 查询作业参与人数
+func (s *UnimplementedSolutionServer) CountContestParticipants(ctx context.Context, req *CountContestParticipantsReq) (*CountContestParticipantsRsp, error) {
+	return nil, errors.New("rpc CountContestParticipants of service SolutionServer is not implemented")
+}
+
+// QueryContestFinishCount QueryContestFinishCount 查询作业完成人数
+func (s *UnimplementedSolutionServer) QueryContestFinishCount(ctx context.Context, req *QueryContestFinishCountReq) (*QueryContestFinishCountRsp, error) {
+	return nil, errors.New("rpc QueryContestFinishCount of service SolutionServer is not implemented")
+}
+
+// CountContestSubmission CountContestSubmission 查询作业提交分布统计
+func (s *UnimplementedSolutionServer) CountContestSubmission(ctx context.Context, req *CountContestSubmissionReq) (*CountContestSubmissionRsp, error) {
+	return nil, errors.New("rpc CountContestSubmission of service SolutionServer is not implemented")
+}
+
+// CountContestProblemSubmission CountContestProblemSubmission 查询作业的题目提交统计数据
+func (s *UnimplementedSolutionServer) CountContestProblemSubmission(ctx context.Context, req *CountContestProblemSubmissionReq) (*CountContestProblemSubmissionRsp, error) {
+	return nil, errors.New("rpc CountContestProblemSubmission of service SolutionServer is not implemented")
+}
+
+// QueryContestCompletionStatus QueryContestCompletionStatus 查询作业完成情况
+func (s *UnimplementedSolutionServer) QueryContestCompletionStatus(ctx context.Context, req *QueryContestCompletionStatusReq) (*QueryContestCompletionStatusRsp, error) {
+	return nil, errors.New("rpc QueryContestCompletionStatus of service SolutionServer is not implemented")
+}
+
 // END --------------------------------- Default Unimplemented Server Service --------------------------------- END
 
 // END ======================================= Server Service Definition ======================================= END
@@ -327,6 +472,16 @@ type SolutionServerClientProxy interface {
 	QueryContestRankData(ctx context.Context, req *QueryContestRankDataReq, opts ...client.Option) (rsp *QueryContestRankDataRsp, err error)
 	// QueryUserContestSubmission QueryUserContestSubmission 查询用户作业的提交统计数据
 	QueryUserContestSubmission(ctx context.Context, req *QueryUserContestSubmissionReq, opts ...client.Option) (rsp *QueryUserContestSubmissionRsp, err error)
+	// CountContestParticipants CountContestParticipants 查询作业参与人数
+	CountContestParticipants(ctx context.Context, req *CountContestParticipantsReq, opts ...client.Option) (rsp *CountContestParticipantsRsp, err error)
+	// QueryContestFinishCount QueryContestFinishCount 查询作业完成人数
+	QueryContestFinishCount(ctx context.Context, req *QueryContestFinishCountReq, opts ...client.Option) (rsp *QueryContestFinishCountRsp, err error)
+	// CountContestSubmission CountContestSubmission 查询作业提交分布统计
+	CountContestSubmission(ctx context.Context, req *CountContestSubmissionReq, opts ...client.Option) (rsp *CountContestSubmissionRsp, err error)
+	// CountContestProblemSubmission CountContestProblemSubmission 查询作业的题目提交统计数据
+	CountContestProblemSubmission(ctx context.Context, req *CountContestProblemSubmissionReq, opts ...client.Option) (rsp *CountContestProblemSubmissionRsp, err error)
+	// QueryContestCompletionStatus QueryContestCompletionStatus 查询作业完成情况
+	QueryContestCompletionStatus(ctx context.Context, req *QueryContestCompletionStatusReq, opts ...client.Option) (rsp *QueryContestCompletionStatusRsp, err error)
 }
 
 type SolutionServerClientProxyImpl struct {
@@ -512,6 +667,106 @@ func (c *SolutionServerClientProxyImpl) QueryUserContestSubmission(ctx context.C
 	callopts = append(callopts, c.opts...)
 	callopts = append(callopts, opts...)
 	rsp := &QueryUserContestSubmissionRsp{}
+	if err := c.client.Invoke(ctx, req, rsp, callopts...); err != nil {
+		return nil, err
+	}
+	return rsp, nil
+}
+
+func (c *SolutionServerClientProxyImpl) CountContestParticipants(ctx context.Context, req *CountContestParticipantsReq, opts ...client.Option) (*CountContestParticipantsRsp, error) {
+	ctx, msg := codec.WithCloneMessage(ctx)
+	defer codec.PutBackMessage(msg)
+	msg.WithClientRPCName("/oj.java.solution.SolutionServer/CountContestParticipants")
+	msg.WithCalleeServiceName(SolutionServerServer_ServiceDesc.ServiceName)
+	msg.WithCalleeApp("")
+	msg.WithCalleeServer("")
+	msg.WithCalleeService("SolutionServer")
+	msg.WithCalleeMethod("CountContestParticipants")
+	msg.WithSerializationType(codec.SerializationTypePB)
+	callopts := make([]client.Option, 0, len(c.opts)+len(opts))
+	callopts = append(callopts, c.opts...)
+	callopts = append(callopts, opts...)
+	rsp := &CountContestParticipantsRsp{}
+	if err := c.client.Invoke(ctx, req, rsp, callopts...); err != nil {
+		return nil, err
+	}
+	return rsp, nil
+}
+
+func (c *SolutionServerClientProxyImpl) QueryContestFinishCount(ctx context.Context, req *QueryContestFinishCountReq, opts ...client.Option) (*QueryContestFinishCountRsp, error) {
+	ctx, msg := codec.WithCloneMessage(ctx)
+	defer codec.PutBackMessage(msg)
+	msg.WithClientRPCName("/oj.java.solution.SolutionServer/QueryContestFinishCount")
+	msg.WithCalleeServiceName(SolutionServerServer_ServiceDesc.ServiceName)
+	msg.WithCalleeApp("")
+	msg.WithCalleeServer("")
+	msg.WithCalleeService("SolutionServer")
+	msg.WithCalleeMethod("QueryContestFinishCount")
+	msg.WithSerializationType(codec.SerializationTypePB)
+	callopts := make([]client.Option, 0, len(c.opts)+len(opts))
+	callopts = append(callopts, c.opts...)
+	callopts = append(callopts, opts...)
+	rsp := &QueryContestFinishCountRsp{}
+	if err := c.client.Invoke(ctx, req, rsp, callopts...); err != nil {
+		return nil, err
+	}
+	return rsp, nil
+}
+
+func (c *SolutionServerClientProxyImpl) CountContestSubmission(ctx context.Context, req *CountContestSubmissionReq, opts ...client.Option) (*CountContestSubmissionRsp, error) {
+	ctx, msg := codec.WithCloneMessage(ctx)
+	defer codec.PutBackMessage(msg)
+	msg.WithClientRPCName("/oj.java.solution.SolutionServer/CountContestSubmission")
+	msg.WithCalleeServiceName(SolutionServerServer_ServiceDesc.ServiceName)
+	msg.WithCalleeApp("")
+	msg.WithCalleeServer("")
+	msg.WithCalleeService("SolutionServer")
+	msg.WithCalleeMethod("CountContestSubmission")
+	msg.WithSerializationType(codec.SerializationTypePB)
+	callopts := make([]client.Option, 0, len(c.opts)+len(opts))
+	callopts = append(callopts, c.opts...)
+	callopts = append(callopts, opts...)
+	rsp := &CountContestSubmissionRsp{}
+	if err := c.client.Invoke(ctx, req, rsp, callopts...); err != nil {
+		return nil, err
+	}
+	return rsp, nil
+}
+
+func (c *SolutionServerClientProxyImpl) CountContestProblemSubmission(ctx context.Context, req *CountContestProblemSubmissionReq, opts ...client.Option) (*CountContestProblemSubmissionRsp, error) {
+	ctx, msg := codec.WithCloneMessage(ctx)
+	defer codec.PutBackMessage(msg)
+	msg.WithClientRPCName("/oj.java.solution.SolutionServer/CountContestProblemSubmission")
+	msg.WithCalleeServiceName(SolutionServerServer_ServiceDesc.ServiceName)
+	msg.WithCalleeApp("")
+	msg.WithCalleeServer("")
+	msg.WithCalleeService("SolutionServer")
+	msg.WithCalleeMethod("CountContestProblemSubmission")
+	msg.WithSerializationType(codec.SerializationTypePB)
+	callopts := make([]client.Option, 0, len(c.opts)+len(opts))
+	callopts = append(callopts, c.opts...)
+	callopts = append(callopts, opts...)
+	rsp := &CountContestProblemSubmissionRsp{}
+	if err := c.client.Invoke(ctx, req, rsp, callopts...); err != nil {
+		return nil, err
+	}
+	return rsp, nil
+}
+
+func (c *SolutionServerClientProxyImpl) QueryContestCompletionStatus(ctx context.Context, req *QueryContestCompletionStatusReq, opts ...client.Option) (*QueryContestCompletionStatusRsp, error) {
+	ctx, msg := codec.WithCloneMessage(ctx)
+	defer codec.PutBackMessage(msg)
+	msg.WithClientRPCName("/oj.java.solution.SolutionServer/QueryContestCompletionStatus")
+	msg.WithCalleeServiceName(SolutionServerServer_ServiceDesc.ServiceName)
+	msg.WithCalleeApp("")
+	msg.WithCalleeServer("")
+	msg.WithCalleeService("SolutionServer")
+	msg.WithCalleeMethod("QueryContestCompletionStatus")
+	msg.WithSerializationType(codec.SerializationTypePB)
+	callopts := make([]client.Option, 0, len(c.opts)+len(opts))
+	callopts = append(callopts, c.opts...)
+	callopts = append(callopts, opts...)
+	rsp := &QueryContestCompletionStatusRsp{}
 	if err := c.client.Invoke(ctx, req, rsp, callopts...); err != nil {
 		return nil, err
 	}

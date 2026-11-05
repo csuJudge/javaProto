@@ -22,6 +22,16 @@ service SolutionServer {
   rpc QueryContestRankData(QueryContestRankDataReq) returns (QueryContestRankDataRsp) {}
   // QueryUserContestSubmission 查询用户作业的提交统计数据
   rpc QueryUserContestSubmission(QueryUserContestSubmissionReq) returns (QueryUserContestSubmissionRsp) {}
+  // CountContestParticipants 查询作业参与人数
+  rpc CountContestParticipants(CountContestParticipantsReq) returns (CountContestParticipantsRsp) {}
+  // QueryContestFinishCount 查询作业完成人数
+  rpc QueryContestFinishCount(QueryContestFinishCountReq) returns (QueryContestFinishCountRsp) {}
+  // CountContestSubmission 查询作业提交分布统计
+  rpc CountContestSubmission(CountContestSubmissionReq) returns (CountContestSubmissionRsp) {}
+  // CountContestProblemSubmission 查询作业的题目提交统计数据
+  rpc CountContestProblemSubmission(CountContestProblemSubmissionReq) returns (CountContestProblemSubmissionRsp) {}
+  // QueryContestCompletionStatus 查询作业完成情况
+  rpc QueryContestCompletionStatus(QueryContestCompletionStatusReq) returns (QueryContestCompletionStatusRsp) {}
 }
 
 message QueryUserContestSubmissionReq {
@@ -208,4 +218,88 @@ message runtimeInfo{
   int32 exitCode = 5;// 进程退出码
   int32 time = 6; // 运行耗时
   int32 memory = 7; // 峰值内存
+}
+
+message CountContestParticipantsReq{
+  int32 contestID = 1;  // 作业编号
+}
+
+message CountContestParticipantsRsp{
+  string message = 1;  // 返回信息
+  int32 code = 2;  // 返回码
+  int32 participants = 3;  // 参与人数
+}
+
+message QueryContestFinishCountReq{
+  int32 contestID = 1;  // 作业编号
+  string problemIDs = 2;  // 题目编号列表(逗号分隔)
+  int32 problemCount = 3;  // 题目数量
+}
+
+message QueryContestFinishCountRsp{
+  string message = 1;  // 返回信息
+  int32 code = 2;  // 返回码
+  int32 finishCount = 3;  // 完成人数
+}
+
+message CountContestSubmissionReq{
+  int32 contestID = 1;  // 作业编号
+}
+
+message CountContestSubmissionRsp{
+  string message = 1;  // 返回信息
+  int32 code = 2;  // 返回码
+  int32 acceptCount = 3;  // 程序通过数量
+  int32 presentationErrorCount = 4;  // 格式错误数量
+  int32 wrongAnswerCount = 5;  // 答案错误数量
+  int32 timeLimitExceededCount = 6;  // 运行超出时间限制数量
+  int32 runtimeErrorCount = 7;  // 运行时错误数量
+  int32 compileErrorCount = 8;  // 编译错误数量
+  int32 memoryLimitExceededCount = 9;  // 超出内存限制数量
+  int32 outputLimitExceededCount = 10;  // 输出超过限制数量
+  int32 partiallyCorrectCount = 11;  // 部分正确数量
+  int32 systemErrorCount = 12;  // 系统错误数量
+}
+
+message CountContestProblemSubmissionReq{
+  int32 contestID = 1;  // 作业编号
+}
+
+message ProblemClassifiedSolution{
+  int32 problemID = 1;  // 题目编号
+  string problemName = 2;  // 题目名称
+  int32 acceptCount = 3;  // 程序通过数量
+  int32 presentationErrorCount = 4;  // 格式错误数量
+  int32 wrongAnswerCount = 5;  // 答案错误数量
+  int32 timeLimitExceededCount = 6;  // 运行超出时间限制数量
+  int32 runtimeErrorCount = 7;  // 运行时错误数量
+  int32 compileErrorCount = 8;  // 编译错误数量
+  int32 memoryLimitExceededCount = 9;  // 超出内存限制数量
+  int32 outputLimitExceededCount = 10;  // 输出超过限制数量
+  int32 partiallyCorrectCount = 11;  // 部分正确数量
+  int32 systemErrorCount = 12;  // 系统错误数量
+}
+
+message CountContestProblemSubmissionRsp{
+  string message = 1;  // 返回信息
+  int32 code = 2;  // 返回码
+  repeated ProblemClassifiedSolution problem = 3;  // 题目统计数据
+}
+
+message QueryContestCompletionStatusReq{
+  int32 contestID = 1;  // 作业编号
+  int32 userID = 2;  // 用户编号
+}
+
+message CompletionStatus{
+  int32 problemID = 1;  // 题目编号
+  string problemName = 2;  // 题目名称
+  int32 solved = 3;  // 解决数
+}
+
+message QueryContestCompletionStatusRsp{
+  string message = 1;  // 返回信息
+  int32 code = 2;  // 返回码
+  repeated CompletionStatus problem = 3;  // 完成情况
+  int32 total = 4;  // 参与人数
 }
