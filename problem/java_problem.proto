@@ -64,6 +64,7 @@ message Problem {
   int32 submission = 16; // 提交数
   string exampleInput = 17; // 输入样例
   string exampleOutput = 18; // 输出样例
+  string knowledge = 19; // 知识点
 }
 
 message QueryProblemNameReq{
